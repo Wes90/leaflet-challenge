@@ -2,10 +2,10 @@ var link = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.g
 
 d3.json(link, function(data){
   console.log(data);
-  var depth = data.features[0].geometry.coordinates[2];
-  console.log(depth);
-  var mag = data.features[0].properties.mag;
-  console.log(mag);
+  // var depth = data.features[0].geometry.coordinates[2];
+  // console.log(depth);
+  // var mag = data.features[0].properties.mag;
+  // console.log(mag);
   
  
   var geojsonMarkerOptions = {
@@ -32,12 +32,7 @@ switch (true) {
     return "#8DFF00";
   case mag >= 0:
     return "#FF0000"
-  
-
 }};
-
-console.log(calcColor(depth));
-
 
 function calRadius (depth){
   if (depth === 0) {
@@ -45,7 +40,6 @@ function calRadius (depth){
   }
   return depth * 4
 }
-
 
 function stylefunc (feature) {
    return {
@@ -55,24 +49,22 @@ function stylefunc (feature) {
       opacity: 1,
       fillOpacity: 0.8
    }
-
   }
+
+  var maginfo = data.features;
+  // var geo = maginfo.properties.filter(maginfo => maginfo.length);
+  console.log(maginfo.filter(x => x.length));
 
 L.geoJSON(data, {
   pointToLayer: function (feature, latlng) {
     return L.circleMarker(latlng, geojsonMarkerOptions);
   }, style: stylefunc,
    onEachFeature: function (feature, layer) {
-    if (feature.properties && feature.properties.popupContent) {
-       layer.bindPopup('WES TEST');
-   }
-  }   
-  
+  //   if (info && info.popupContent) {
+  //      layer.bindPopup("<h3>" + info.place + "<h3><h3>Magnitude: " + info.mag + "</h3>" + "<h3><h3>Depth" + geo.coordinates[2]);
+  //  }
+  }    
  }).addTo(myMap);
-
-
-
-
 });
 
 
