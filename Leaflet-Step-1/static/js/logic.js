@@ -2,10 +2,10 @@ var link = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.g
 
 d3.json(link, function(data){
   console.log(data);
-  // var depth = data.features[0].geometry.coordinates[2];
-  // console.log(depth);
-  // var mag = data.features[0].properties.mag;
-  // console.log(mag);
+  var depth = data.features[0].geometry.coordinates[2];
+  console.log(Math.max(depth));
+  // var mag = data.;
+  console.log(depth);
   
  
   var geojsonMarkerOptions = {
@@ -17,28 +17,35 @@ d3.json(link, function(data){
     fillOpacity: 0.8
 };
 
-function calcColor(mag){
+
+  // Create a legend 
+// var legend = L.control({
+//   position: "bottomright"
+// }).addTo(myMap);
+
+
+function calcColor(depth){
 //switch statements
 switch (true) {
-  case mag >= 5:
-    return '#00FF00';
-  case mag >= 4:
+  case depth >= 90:
+    return "#FF0000";
+  case depth >= 70:
     return "#FF6900";
-  case mag >= 3:
+  case  depth >= 50:
     return "#FFC100";
-  case mag >= 2:
+  case depth >= 30:
     return "#E5FF00";
-  case mag >= 1:
+  case depth >= 10:
     return "#8DFF00";
-  case mag >= 0:
-    return "#FF0000"
+  case depth < 10:
+    return "#00FF00";
 }};
 
-function calRadius (depth){
-  if (depth === 0) {
+function calRadius (mag){
+  if (mag === 0) {
     return 1;
   }
-  return depth * 4
+  return mag * 4
 }
 
 function stylefunc (feature) {
@@ -51,24 +58,20 @@ function stylefunc (feature) {
    }
   }
 
-  var maginfo = data.features;
-  // var geo = maginfo.properties.filter(maginfo => maginfo.length);
-  console.log(maginfo.filter(x => x.length));
-
 L.geoJSON(data, {
   pointToLayer: function (feature, latlng) {
     return L.circleMarker(latlng, geojsonMarkerOptions);
   }, style: stylefunc,
    onEachFeature: function (feature, layer) {
-  //   if (info && info.popupContent) {
-  //      layer.bindPopup("<h3>" + info.place + "<h3><h3>Magnitude: " + info.mag + "</h3>" + "<h3><h3>Depth" + geo.coordinates[2]);
-  //  }
-  }    
+     layer.bindPopup('<h3><h3>Depth: ' + feature.geometry.coordinates[2] + '<h3><h3>Magnitude: ' + feature.properties.mag + '</h3>');
+   }
  }).addTo(myMap);
 });
 
-
-
+// Create a legend 
+// var legend = L.control({
+//   position: "bottomright"
+// }).addTo(myMap);
 
 var myMap = L.map("map", {
   center: [33.7165, -116.7476667],
@@ -86,4 +89,3 @@ var lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{
 
 
 
-//  d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson", createmarkers);
