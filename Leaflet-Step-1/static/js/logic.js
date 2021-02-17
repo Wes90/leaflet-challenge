@@ -63,7 +63,7 @@ L.geoJSON(data, {
     return L.circleMarker(latlng, geojsonMarkerOptions);
   }, style: stylefunc,
    onEachFeature: function (feature, layer) {
-     layer.bindPopup('<h3><h3>Depth: ' + feature.geometry.coordinates[2] + '<h3><h3>Magnitude: ' + feature.properties.mag + '</h3>');
+     layer.bindPopup('<h3><h3>Location: ' + feature.properties.place + '<h3><h3>Depth: ' + feature.geometry.coordinates[2] + '<h3><h3>Magnitude: ' + feature.properties.mag + '</h3>');
    }
  }).addTo(myMap);
 });
